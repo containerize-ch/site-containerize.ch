@@ -1,0 +1,18 @@
+site_name: containerize.ch
+
+repo_url: https://github.com/containerize-ch/site-containerize.ch
+edit_uri: edit/main/docs/
+
+theme:
+  name: "material"
+  palette:
+    - scheme: default
+      accent: blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
