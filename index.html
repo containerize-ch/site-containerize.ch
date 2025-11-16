@@ -302,6 +302,99 @@
             line-height: 1.6;
         }
 
+        .terminal-section {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+        }
+
+        .terminal-window {
+            background: #0a0a0a;
+            border: 2px solid #00FF00;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            max-width: 900px;
+            margin: 2rem auto;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #00FF00;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00FF00;
+        }
+
+        .terminal-title {
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            color: #00FF00;
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            min-height: 400px;
+        }
+
+        .terminal-line {
+            display: flex;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .terminal-prompt {
+            color: #00FF00;
+            margin-right: 0.5rem;
+        }
+
+        .terminal-command {
+            color: #00FF00;
+        }
+
+        .terminal-output {
+            color: #00FF00;
+            margin-left: 0;
+            white-space: pre-wrap;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: #00FF00;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
         footer {
             background: rgba(0, 255, 0, 0.05);
             border-top: 1px solid rgba(0, 255, 0, 0.2);
@@ -383,15 +476,41 @@
     <main>
         <div class="container">
 
-
-            <section class="image-showcase">
-
-                <h2 class="section-title">
+            <section class="terminal-section">
+                   <h2 class="section-title">
                     <img src="images/containerize_logo_neon.png" alt="Linux Container Hacker Club Logo" class="logo-big">
                     <p class="section-title">You can think as long as you want, but then you need to try. Don't stop
                         trying and explore!</p>
                     <p class="section-title"> -- This is a non-profit club; our motives are purely community-based, not financial. --</p>
                 </h2>
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-button"></div>
+                        <div class="terminal-button"></div>
+                        <div class="terminal-button"></div>
+                        <div class="terminal-title">terminal@container-hacker</div>
+                    </div>
+                    <div class="terminal-body" id="terminal"></div>
+                </div>
+            </section>
+
+            <section class="blog-feeds" aria-labelledby="blog-title">
+                <h2 class="section-title" id="blog-title">Latest experiments or blog links</h2>
+                <p class="section-subtitle">Insights, tutorials, and updates on containerization and cloud-native technologies</p>
+                <ul class="blog-list" role="list">
+                    <li class="blog-item">
+                        <a class="text-links"
+                           href="https://medium.containerize.ch/container-image-strategy-from-full-featured-to-minimal-to-scratch-3fd94d6cece4"
+                           target="_blank" rel="noopener noreferrer">
+                            Container Image Strategy: From Full-Featured to Minimal to Scratch 🚀
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="image-showcase">
+
+         
                 <p class="section-subtitle">
                 <div class="image-gallery">
                     <div class="image-card">
@@ -423,19 +542,7 @@
             </section>
 
 
-            <section class="blog-feeds" aria-labelledby="blog-title">
-                <h2 class="section-title" id="blog-title">Latest experiments or blog links</h2>
-                <p class="section-subtitle">Insights, tutorials, and updates on containerization and cloud-native technologies</p>
-                <ul class="blog-list" role="list">
-                    <li class="blog-item">
-                        <a class="text-links"
-                           href="https://medium.containerize.ch/container-image-strategy-from-full-featured-to-minimal-to-scratch-3fd94d6cece4"
-                           target="_blank" rel="noopener noreferrer">
-                            Container Image Strategy: From Full-Featured to Minimal to Scratch 🚀
-                        </a>
-                    </li>
-                </ul>
-            </section>
+
         </div>
     </main>
 
@@ -502,6 +609,103 @@
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
         });
+
+        // Terminal animation
+        const terminalCommands = [
+            { type: 'command', text: '$ cat Dockerfile', delay: 100 },
+            { type: 'output', text: 'FROM scratch\nLABEL maintainer="BigG01 <info@containerize.ch>"\nWORKDIR /bin\nCOPY bin/main-static /go/bin/main-static\nEXPOSE 8080\nENTRYPOINT ["/go/bin/main-static"]', delay: 50 },
+            { type: 'command', text: '$ docker build -t myapp:latest .', delay: 100 },
+            { type: 'output', text: '[+] Building 2.1s (6/6) FINISHED\n => [1/2] FROM scratch\n => [2/2] COPY bin/main-static /go/bin/main-static\n => exporting to image\n => => naming to myapp:latest', delay: 30 },
+            { type: 'command', text: '$ docker images | grep myapp', delay: 100 },
+            { type: 'output', text: 'myapp       latest    a1b2c3d4e5f6   2 minutes ago   6.2MB', delay: 50 },
+            { type: 'command', text: '$ docker tag myapp:latest ghcr.io/containerize-ch/myapp:latest', delay: 100 },
+            { type: 'command', text: '$ docker push ghcr.io/containerize-ch/myapp:latest', delay: 100 },
+            { type: 'output', text: 'The push refers to repository [ghcr.io/containerize-ch/myapp]\nlatest: digest: sha256:abc123... size: 1024\n✅ Successfully pushed!', delay: 30 },
+            { type: 'command', text: '$ echo "Minimal container is ready! 🚀"', delay: 100 },
+            { type: 'output', text: 'Minimal container is ready! 🚀', delay: 50 }
+        ];
+
+        let commandIndex = 0;
+        let charIndex = 0;
+        let currentLine = null;
+        let isAnimating = false;
+
+        function typeText(text, element, callback) {
+            if (charIndex < text.length) {
+                element.textContent += text[charIndex];
+                charIndex++;
+                setTimeout(() => typeText(text, element, callback), 20);
+            } else {
+                charIndex = 0;
+                if (callback) callback();
+            }
+        }
+
+        function animateTerminal() {
+            if (commandIndex >= terminalCommands.length) {
+                // Restart animation after a pause
+                setTimeout(() => {
+                    document.getElementById('terminal').innerHTML = '';
+                    commandIndex = 0;
+                    animateTerminal();
+                }, 3000);
+                return;
+            }
+
+            const cmd = terminalCommands[commandIndex];
+            const terminal = document.getElementById('terminal');
+            
+            currentLine = document.createElement('div');
+            currentLine.className = 'terminal-line';
+            currentLine.style.animationDelay = '0s';
+            
+            if (cmd.type === 'command') {
+                const prompt = document.createElement('span');
+                prompt.className = 'terminal-prompt';
+                prompt.textContent = '';
+                currentLine.appendChild(prompt);
+                
+                const command = document.createElement('span');
+                command.className = 'terminal-command';
+                currentLine.appendChild(command);
+                
+                terminal.appendChild(currentLine);
+                
+                setTimeout(() => {
+                    typeText(cmd.text, command, () => {
+                        commandIndex++;
+                        setTimeout(animateTerminal, cmd.delay);
+                    });
+                }, 100);
+            } else {
+                const output = document.createElement('div');
+                output.className = 'terminal-output';
+                output.textContent = cmd.text;
+                currentLine.appendChild(output);
+                terminal.appendChild(currentLine);
+                
+                commandIndex++;
+                setTimeout(animateTerminal, cmd.delay);
+            }
+            
+            // Auto-scroll to bottom
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Start animation when terminal section is visible
+        const terminalObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isAnimating) {
+                    isAnimating = true;
+                    animateTerminal();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const terminalSection = document.querySelector('.terminal-section');
+        if (terminalSection) {
+            terminalObserver.observe(terminalSection);
+        }
     </script>
 </body>
 
